@@ -16,6 +16,7 @@ func AuthUser() gin.HandlerFunc {
 			responses.ParamErrRep(c, &responses.Responses{
 				Msg: err.Error(),
 			})
+			c.Abort()
 			return
 		}
 		c.Set("UUID", User.UUID)
