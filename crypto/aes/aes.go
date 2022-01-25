@@ -43,3 +43,28 @@ func AesDecrypt(ciphertext []byte, key, iv []byte) ([]byte, error) {
 	origData = PKCS7UnPadding(origData)
 	return origData, nil
 }
+
+func EcbEncrypt(data, key []byte) []byte {
+	block, _ := aes.NewCipher(key)
+	data = PKCS7Padding(data, block.BlockSize())
+	decrypted := make([]byte, len(data))
+	size := block.BlockSize()
+
+	for bs, be := 0, size; bs < len(data); bs, be = bs+size, be+size {
+		block.Encrypt(decrypted[bs:be], data[bs:be])
+	}
+
+	return decrypted
+}
+
+func EcbDecrypt(data, key []byte) []byte {
+	block, _ := aes.NewCipher(key)
+	decrypted := make([]byte, len(data))
+	size := block.BlockSize()
+
+	for bs, be := 0, size; bs < len(data); bs, be = bs+size, be+size {
+		block.Decrypt(decrypted[bs:be], data[bs:be])
+	}
+
+	return PKCS7UnPadding(decrypted)
+}
