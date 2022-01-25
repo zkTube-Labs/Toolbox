@@ -1,6 +1,10 @@
 package cache
 
 const (
-	Registered = "CAPTCHA:REG:"
-	Login      = "LOGIN:REG:"
+	CapReg     = "CAPTCHA:REG:"
+	CapLogin   = "CAPTCHA:LOGIN:"
+	CapForgotP = "CAPTCHA:FORGOT:PASSWORD:"
+	CapSetAuto = "CAPTCHA:SETAUTO:"
+
+	Secret = "SECRET:"
 )
