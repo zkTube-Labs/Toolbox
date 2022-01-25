@@ -25,6 +25,14 @@ func (m *RJMsg) GetMapClaims() (result jwt.MapClaims) {
 	return
 }
 
+func (m *RJMsg) GetExpiration() time.Time {
+	return m.Expiration
+}
+
+func (m *RJMsg) GetNotBefore() time.Time {
+	return m.NotBefore
+}
+
 type AuthMsg struct {
 	IssuanceAt time.Time `json:"iat"`
 	NotBefore  time.Time `json:"nbf"`
@@ -41,4 +49,12 @@ func (m *AuthMsg) GetMapClaims() (result jwt.MapClaims) {
 	json_str, _ := json.Marshal(m)
 	_ = json.Unmarshal([]byte(json_str), &result)
 	return
+}
+
+func (m *AuthMsg) GetExpiration() time.Time {
+	return m.Expiration
+}
+
+func (m *AuthMsg) GetNotBefore() time.Time {
+	return m.NotBefore
 }

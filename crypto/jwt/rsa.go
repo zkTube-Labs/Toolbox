@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
+	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 )
@@ -69,16 +70,24 @@ func InitUser(pubFile string) (err error) {
 
 type JMsg interface {
 	GetMapClaims() jwt.MapClaims
+	GetExpiration() time.Time
+	GetNotBefore() time.Time
 }
 
 func (J *RsaJwt) CreateRsaJWT(M JMsg) (tokenStr string, err error) {
+	exp := M.GetExpiration().Unix()
+	nbf := M.GetNotBefore().Unix()
+	if exp < 0 || nbf < 0 || exp < nbf {
+		err = errors.New("time is invalid")
+		return
+	}
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, M.GetMapClaims())
 	return token.SignedString(J.privateKey)
 }
 
 // Parses the Token and converts the result to struct return
 // @params rMsg must pass in the struct pointer type
-func (J *RsaJwt) ParseToken(tokenStr string, rMsg interface{}) (err error) {
+func (J *RsaJwt) ParseToken(tokenStr string, rMsg JMsg) (err error) {
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 			return nil, errors.New("verify that the encryption type of the token is incorrect")
@@ -88,11 +97,21 @@ func (J *RsaJwt) ParseToken(tokenStr string, rMsg interface{}) (err error) {
 	if err != nil {
 		return
 	}
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		data, _ := json.Marshal(claims)
-		err = json.Unmarshal(data, rMsg)
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !token.Valid || !ok {
+		return errors.New("token is invalid or has no corresponding value")
+	}
+	data, _ := json.Marshal(claims)
+	err = json.Unmarshal(data, rMsg)
+	if err != nil {
 		return
 	}
-	err = errors.New("token is invalid or has no corresponding value")
+	now := time.Now().Unix()
+	exp := rMsg.GetExpiration().Unix()
+	nbf := rMsg.GetNotBefore().Unix()
+	if exp < 0 || nbf < 0 || exp < now || now < nbf || exp < nbf {
+		return errors.New("token is invalid")
+	}
 	return
 }
