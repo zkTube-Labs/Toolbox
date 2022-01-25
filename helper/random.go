@@ -11,8 +11,8 @@ var defaultLetters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXY
 
 // RandomString returns a random string with a fixed length
 func RandomString(n int, allowedChars ...[]rune) string {
+	rand.Seed(time.Now().UnixNano() + int64(rand.Intn(100)))
 	var letters []rune
-
 	if len(allowedChars) == 0 {
 		letters = defaultLetters
 	} else {
@@ -20,6 +20,7 @@ func RandomString(n int, allowedChars ...[]rune) string {
 	}
 
 	b := make([]rune, n)
+
 	for i := range b {
 		b[i] = letters[rand.Intn(len(letters))]
 	}

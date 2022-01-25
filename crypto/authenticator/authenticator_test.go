@@ -10,7 +10,7 @@ func Test_InitAuth(t *testing.T) {
 	issuer := "zkTube"
 
 	secret := NewGoogleAuth().GetSecret()
-	fmt.Println("Secret:", secret)
+	fmt.Println("Secret:", secret, len(secret))
 
 	code, err := NewGoogleAuth().GetCode(secret)
 	fmt.Println("Code:", code, err)

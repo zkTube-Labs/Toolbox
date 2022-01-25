@@ -6,14 +6,15 @@ import (
 	"encoding/hex"
 	"fmt"
 	"testing"
+
+	"github.com/zkTube-Labs/Toolbox/helper"
 )
 
 func getKey() []byte {
-	str := "BpLnfgDsc2WD8F2qNfHK5a84jjJkwzDk"
+	str := helper.RandomString(32)
+	// str := "BpLnfgDsc2WD8F2qNfHK5a84jjJkwzDk"
 	fmt.Println("salt", str)
-	byt := []byte(str)
-	str = hex.EncodeToString(byt)
-	key, err := hex.DecodeString(str)
+	key, err := hex.DecodeString(hex.EncodeToString([]byte(str)))
 	if err != nil {
 		panic(err)
 	}
@@ -46,9 +47,10 @@ func TestCipher(t *testing.T) {
 func TestEcb(t *testing.T) {
 	key := getKey()
 
-	plaintext := []byte("0xB74693f2DAbdb84570755E536e016d3CBDEB0810")
+	plaintext := []byte("WXMC55V3OEZSX4E66FPZWH6AZ62UZNVK")
 	ciphertext := EcbEncrypt(plaintext, key)
-	fmt.Println("ciphertext", base64.StdEncoding.EncodeToString(ciphertext))
+	str := base64.StdEncoding.EncodeToString(ciphertext)
+	fmt.Println("ciphertext", str, len(str))
 
 	plaintext = EcbDecrypt(ciphertext, key)
 	fmt.Println("plaintext", string(plaintext))
