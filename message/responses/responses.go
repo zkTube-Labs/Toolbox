@@ -41,10 +41,10 @@ func SuccessRep(c *gin.Context, m Msg) {
 func ParamErrRep(c *gin.Context, m Msg) {
 	if m == nil {
 		m = &Responses{
-			Code: ParameterError,
-			Msg:  "Parameter error",
+			Msg: "Parameter error",
 		}
 	}
+	m.setCode(ParameterError)
 	c.JSON(http.StatusBadRequest, m)
 }
 

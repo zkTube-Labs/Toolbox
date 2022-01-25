@@ -9,6 +9,13 @@ import (
 func AuthUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		Token := c.GetHeader("token")
+		if Token == "" {
+			responses.ParamErrRep(c, &responses.Responses{
+				Msg: "missing login information",
+			})
+			c.Abort()
+			return
+		}
 		RJ := jwt.NewJwt()
 		User := &jwt.RJMsg{}
 		err := RJ.ParseToken(Token, User)
