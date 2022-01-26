@@ -6,5 +6,7 @@ const (
 	CapForgotP = "CAPTCHA:FORGOT:PASSWORD:"
 	CapSetAuto = "CAPTCHA:SETAUTO:"
 
+	CacheEmail = "Cache:Email:"
+
 	Secret = "SECRET:"
 )
