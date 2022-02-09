@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Data struct {
+type PageData struct {
 	Page      int64 `json:"page"`
 	PageSize  int64 `json:"page_size"`
 	Count     int64 `json:"count"`
@@ -15,8 +15,8 @@ type Data struct {
 	Offset    int64 `json:"-"`
 }
 
-func CreatePageParams(Page, PageSize int) *Data {
-	params := Data{}
+func CreatePageParams(Page, PageSize int) *PageData {
+	params := PageData{}
 	if Page <= 0 {
 		params.Page = 1
 	}
@@ -27,8 +27,8 @@ func CreatePageParams(Page, PageSize int) *Data {
 	return &params
 }
 
-func GetPageParams(c *gin.Context) *Data {
-	var params Data
+func GetPageParams(c *gin.Context) *PageData {
+	var params PageData
 	params.Page, _ = strconv.ParseInt(c.Query("p"), 10, 64)
 	params.PageSize, _ = strconv.ParseInt(c.Query("l"), 10, 64)
 
@@ -42,12 +42,12 @@ func GetPageParams(c *gin.Context) *Data {
 	return &params
 }
 
-func SetPageData(Page, PageSize, Count int64) *Data {
+func SetPageData(Page, PageSize, Count int64) *PageData {
 	TotalPage := math.Ceil(float64(Count) / float64(PageSize))
 	if TotalPage < 1 {
 		TotalPage = 1
 	}
-	return &Data{
+	return &PageData{
 		Page:      Page,
 		PageSize:  PageSize,
 		Count:     Count,
