@@ -68,14 +68,23 @@ func GetAddressByPrivateKey(privateKey *ecdsa.PrivateKey) (address string, err e
 	return
 }
 
-func WeiToEth(wei *big.Int) *big.Float {
-	divisor := new(big.Float).SetInt(wei)
-	dividend := new(big.Float).SetFloat64(math.Pow10(18))
-	return new(big.Float).Quo(divisor, dividend)
+func EthToWei(eth *big.Float) *big.Int {
+	return AmountToToken(eth, 18)
 }
 
-func EthToWei(eth *big.Float) *big.Int {
-	multiple := new(big.Float).SetFloat64(math.Pow10(18))
-	ui, _ := new(big.Float).Mul(eth, multiple).Uint64()
-	return new(big.Int).SetUint64(ui)
+func WeiToEth(wei *big.Int) *big.Float {
+	return TokenToAmount(wei, 18)
+}
+
+func AmountToToken(amount *big.Float, decimals int) (i *big.Int) {
+	i = new(big.Int)
+	multiple := new(big.Float).SetFloat64(math.Pow10(decimals))
+	amount.Mul(amount, multiple).Int(i)
+	return
+}
+
+func TokenToAmount(token *big.Int, decimals int) *big.Float {
+	divisor := new(big.Float).SetInt(token)
+	dividend := new(big.Float).SetFloat64(math.Pow10(decimals))
+	return new(big.Float).Quo(divisor, dividend)
 }
