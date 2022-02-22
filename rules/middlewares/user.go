@@ -68,7 +68,7 @@ func AuthOperate(op string, r *redis.Client) gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		if str := r.Get(Operate.Key).Val(); str != "" {
+		if str := r.Get(Operate.Key).Val(); str == "" {
 			responses.ParamErrRep(c, &responses.Responses{
 				Msg: "repeat the operation",
 			})
