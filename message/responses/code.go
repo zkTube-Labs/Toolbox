@@ -22,7 +22,7 @@ func GetMsg(code int) string {
 	case UserAlreadyExists:
 		return "User already exists"
 	case LoginExpires:
-		return "User already exists"
+		return "The login expires"
 	case SUCCESS:
 		return "SUCCESS"
 	}
