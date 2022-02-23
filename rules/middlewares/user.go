@@ -14,7 +14,8 @@ func AuthUser() gin.HandlerFunc {
 		Token := c.GetHeader("token")
 		if Token == "" {
 			responses.ParamErrRep(c, &responses.Responses{
-				Msg: "missing login information",
+				Code: responses.LoginExpires,
+				Msg:  "missing login information",
 			})
 			c.Abort()
 			return
@@ -24,7 +25,8 @@ func AuthUser() gin.HandlerFunc {
 		err := RJ.ParseToken(Token, User)
 		if err != nil {
 			responses.ParamErrRep(c, &responses.Responses{
-				Msg: err.Error(),
+				Code: responses.LoginExpires,
+				Msg:  err.Error(),
 			})
 			c.Abort()
 			return

@@ -14,11 +14,14 @@ const (
 	UntrustedSource   = 10009
 
 	UserAlreadyExists = 20000
+	LoginExpires   = 21000
 )
 
 func GetMsg(code int) string {
 	switch code {
 	case UserAlreadyExists:
+		return "User already exists"
+	case LoginExpires:
 		return "User already exists"
 	case SUCCESS:
 		return "SUCCESS"
