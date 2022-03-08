@@ -1,11 +1,3 @@
-/*
- * @Author: yhlyl
- * @Date: 2021-04-25 10:04:41
- * @LastEditTime: 2021-04-26 16:41:27
- * @LastEditors: yhlyl
- * @Description: 日志类
- * @FilePath: /khlcom-center-server/Users/youhao/work/gowork/src/khlcom/tcp/util/jasonlog/jasonlog.go
- */
 package jasonlog
 
 import (
