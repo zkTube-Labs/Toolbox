@@ -23,3 +23,5 @@
 
 # Avoid key file exposure 
 *.key
+credentials.json
+token.json
