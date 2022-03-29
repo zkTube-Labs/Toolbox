@@ -12,12 +12,14 @@ import (
 )
 
 const (
-	Mainnet = "mainnet"
-	Rinkeby = "rinkeby"
-	Ropsten = "ropsten"
+	Mainnet Network = "mainnet"
+	Rinkeby Network = "rinkeby"
+	Ropsten Network = "ropsten"
 
 	Ifr = "infura"
 )
+
+type Network string
 
 var ETH *Ethereum
 
@@ -26,6 +28,7 @@ type Ethereum struct {
 	ColdWallt string
 	Infura    *infura
 	Cli       *ethclient.Client
+	WSCli     *ethclient.Client
 }
 
 func InitEth(Hot, Cold string) (err error) {
