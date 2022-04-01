@@ -7,13 +7,15 @@ import (
 )
 
 var BscRpcUrl = map[Network]string{
-	Mainnet: "bsc-dataseed1.binance.org/",
-	Test:    "data-seed-prebsc-1-s1.binance.org:8545/",
+	Mainnet: "https://bsc-dataseed1.binance.org/",
+	Test:    "https://data-seed-prebsc-1-s1.binance.org:8545/",
+	Dev:     "http://127.0.0.1:8575/",
 }
 
 var BscWSUrl = map[Network]string{
-	Mainnet: "bsc-ws-node.nariox.org:443",
-	// Test:    "data-seed-prebsc-1-s1.binance.org:8545/",
+	Mainnet: "wss://bsc-ws-node.nariox.org:443",
+	Test:    "wss://data-seed-prebsc-1-s1.binance.org:8545/",
+	Dev:     "wss://127.0.0.1:8576/",
 }
 
 var BscRpc *BSCRPC
@@ -41,13 +43,13 @@ func (i *BSCRPC) SetUrl(k Network) (err error) {
 		err = errors.New("unsupported environment")
 		return
 	}
-	i.Url += "https://" + url
+	i.Url = url
 	url, ok = BscWSUrl[k]
 	if !ok {
 		err = errors.New("unsupported environment")
 		return
 	}
-	i.WsUrl += "wss://" + url
+	i.WsUrl = url
 	return
 }
 

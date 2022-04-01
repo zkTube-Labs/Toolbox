@@ -8,6 +8,7 @@ type Network string
 const (
 	Mainnet Network = "mainnet"
 	Test    Network = "test"
+	Dev     Network = "dev"
 )
 
 var Bsc *eth.Ethereum
@@ -19,10 +20,10 @@ func InitBSC(Hot, Cold string) (err error) {
 	}
 	b := NewBSCRPC()
 	Bsc.Cli, err = b.GetClient()
-	// if err != nil {
-	// 	return
-	// }
-	// Bsc.WSCli, err = b.GetWSSClient()
+	if err != nil {
+		return
+	}
+	Bsc.WSCli, err = b.GetWSSClient()
 	return
 }
 
